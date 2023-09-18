@@ -80,7 +80,7 @@ body {
 	color: var(--blue);
 	position: sticky;
 	top: 20px;
-	-webkit-padding-start: 50px;
+	-webkit-padding-start: 90px;
 	background: var(--light);
 	z-index: 500;
 	box-sizing: content-box;
