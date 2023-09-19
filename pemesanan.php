@@ -81,7 +81,6 @@ $username = $_SESSION["username"];
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
-			<i class='bx bx-menu' ></i>
 			<form action="#">
 				<div class="form-input">
 					<input type="search" placeholder="Search...">
@@ -102,49 +101,39 @@ $username = $_SESSION["username"];
 					<h1>Kelola Pemesanan</h1>
 				</div>
 			</div>
-
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
 						<h3>Data Pesanan</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
+						<i class='bx bx-search'></i>
+						<i class='bx bx-filter'></i>
+            		</div>
 					<table>
 						<thead>
-							<tr>
+							<tr style="Text-Center">
 								<th>Nama</th>
-								<th>Kontak</th>
 								<th>Alamat</th>
-                                <th>Metode Pembayaran<th>
-                                <th>Kelola Pesanan</th>
+								<th>Tanggal</th>
+								<th>Kontak</th>
+								<th>Metode Pembayaran</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><p>John Doe</p></td>
-								<td>082233344521</td>
+								<td>John Doe</td>
 								<td>Gg. Tomat, Gayungan 8, Gayungsari, kec. Kebonsari, Kota Surabaya</td>
-                                <td>Virtual Account<td>
-                                <td><span class="status completed">Completed</span></td>
-							</tr>
-							<tr>
-								<td><p>John Doe</p></td>
+								<td>01-10-2021</td>
 								<td>082233344521</td>
-								<td>Gg. Tomat, Gayungan 8, Gayungsari, kec. Kebonsari, Kota Surabaya</td>
-                                <td>Cash<td>
-                                <td><span class="status process">Proses</span></td>
-							</tr>
-                            <tr>
-								<td><p>John Doe</p></td>
-								<td>082233344521</td>
-								<td>Gg. Tomat, Gayungan 8, Gayungsari, kec. Kebonsari, Kota Surabaya</td>
-                                <td>Qris<td>
-                                <td><span class="status pending">Pending</span></td>
+								<td>Virtual Account</td>
+								<td class="action">
+									<i class="bx bx-check"></i>
+									<i class="bx bx-trash"></i>
+								</td>
 							</tr>
 						</tbody>
 					</table>
-				</div>
+        		</div>
 			</div>
 		</main>
 		<!-- MAIN -->

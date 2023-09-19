@@ -55,7 +55,7 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 280px;
+	width: 200px;
 	height: 100%;
 	background: var(--light);
 	z-index: 2000;
@@ -67,20 +67,17 @@ body {
 #sidebar::--webkit-scrollbar {
 	display: none;
 }
-#sidebar.hide {
-	width: 60px;
-}
 #sidebar .brand {
 	font-size: 24px;
 	font-weight: 700;
-	height: 56px;
+	height: 60px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	color: var(--blue);
 	position: sticky;
 	top: 20px;
-	-webkit-padding-start: 90px;
+	-webkit-padding-start: 20px;
 	background: var(--light);
 	z-index: 500;
 	box-sizing: content-box;
@@ -166,13 +163,9 @@ body {
 /* CONTENT */
 #content {
 	position: relative;
-	width: calc(100% - 280px);
-	left: 280px;
+	width: calc(100% - 200px);
+	left: 200px;
 	transition: .3s ease;
-}
-#sidebar.hide ~ #content {
-	width: calc(100% - 60px);
-	left: 60px;
 }
 
 
@@ -255,51 +248,14 @@ body {
 	font-size: 20px;
 	position: relative;
 }
-#content nav .notification .num {
-	position: absolute;
-	top: -6px;
-	right: -6px;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	border: 2px solid var(--light);
-	background: var(--red);
-	color: var(--light);
-	font-weight: 700;
-	font-size: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+
 #content nav .profile img {
 	width: 36px;
 	height: 36px;
 	object-fit: cover;
 	border-radius: 50%;
 }
-#content nav .switch-mode {
-	display: block;
-	min-width: 50px;
-	height: 25px;
-	border-radius: 25px;
-	background: var(--grey);
-	cursor: pointer;
-	position: relative;
-}
-#content nav .switch-mode::before {
-	content: '';
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	bottom: 2px;
-	width: calc(25px - 4px);
-	background: var(--blue);
-	border-radius: 50%;
-	transition: all .3s ease;
-}
-#content nav #switch-mode:checked + .switch-mode::before {
-	left: calc(100% - (25px - 4px) - 2px);
-}
+
 /* NAVBAR */
 
 
@@ -322,9 +278,8 @@ body {
 	flex-wrap: wrap;
 }
 #content main .head-title .left h1 {
-	font-size: 36px;
+	font-size: 32px;
 	font-weight: 600;
-	margin-bottom: 10px;
 	color: var(--dark);
 }
 #content main .head-title .left .breadcrumb {
@@ -403,15 +358,11 @@ body {
 	color: var(--dark);	
 }
 
-
-
-
-
 #content main .table-data {
 	display: flex;
 	flex-wrap: wrap;
-	grid-gap: 24px;
-	margin-top: 24px;
+	padding-top: 10px;
+	font-size: 12px;
 	width: 100%;
 	color: var(--dark);
 }
@@ -423,48 +374,17 @@ body {
 }
 #content main .table-data .head {
 	display: flex;
-	align-items: center;
-	grid-gap: 16px;
-	margin-bottom: 24px;
+	margin-bottom: 10px;
 }
 #content main .table-data .head h3 {
 	margin-right: auto;
-	font-size: 24px;
+	font-size: 18px;
 	font-weight: 600;
 }
 #content main .table-data .head .bx {
 	cursor: pointer;
 }
 
-#content main .table-data .order {
-	flex-grow: 1;
-	flex-basis: 500px;
-}
-#content main .table-data .order table {
-	width: 100%;
-	border-collapse: collapse;
-}
-#content main .table-data .order table th {
-	padding-bottom: 12px;
-	font-size: 13px;
-	text-align: left;
-	border-bottom: 1px solid var(--grey);
-}
-#content main .table-data .order table td {
-	padding: 16px 0;
-}
-#content main .table-data .order table tr td:first-child {
-	display: flex;
-	align-items: center;
-	grid-gap: 12px;
-	padding-left: 6px;
-}
-#content main .table-data .order table td img {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
-	object-fit: cover;
-}
 #content main .table-data .order table tbody tr:hover {
 	background: var(--grey);
 }
@@ -475,9 +395,6 @@ body {
 	border-radius: 20px;
 	font-weight: 700;
 }
-#content main .table-data .order table tr td .status.completed {
-	background: var(--blue);
-}
 #content main .table-data .order table tr td .status.process {
 	background: var(--yellow);
 }
@@ -485,36 +402,39 @@ body {
 	background: var(--orange);
 }
 
+td {
+	padding: 10px;
+	text-align: left;
+}
 
-#content main .table-data .todo {
-	flex-grow: 1;
-	flex-basis: 300px;
+th {
+	padding-right: 10px;
+	background-color: #f2f2f2;
 }
-#content main .table-data .todo .todo-list {
-	width: 100%;
+
+/* Gaya status */
+.status {
+	padding: 5px 5px;
+	border-radius: 5px;
+	font-weight: bold;
 }
-#content main .table-data .todo .todo-list li {
-	width: 100%;
-	margin-bottom: 16px;
-	background: var(--grey);
-	border-radius: 10px;
-	padding: 14px 20px;
+
+.completed {
+	background-color: #28A745;
+	color: #fff;
+}
+
+/* Gaya action buttons */
+.action {
 	display: flex;
-	justify-content: space-between;
+	gap: 15px;
 	align-items: center;
 }
-#content main .table-data .todo .todo-list li .bx {
+
+.action i {
 	cursor: pointer;
 }
-#content main .table-data .todo .todo-list li.completed {
-	border-left: 10px solid var(--blue);
-}
-#content main .table-data .todo .todo-list li.not-completed {
-	border-left: 10px solid var(--orange);
-}
-#content main .table-data .todo .todo-list li:last-child {
-	margin-bottom: 0;
-}
+
 /* MAIN */
 /* CONTENT */
 
