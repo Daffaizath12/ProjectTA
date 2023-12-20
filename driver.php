@@ -166,50 +166,50 @@ $username = $_SESSION["username"];
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
+            <div class="col-lg-8 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Status Keberangkatan</h4>
+                  <h4 class="card-title">Data Driver</h4>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th>ID Pesanan</th>
+                          <th>NIK</th>
                           <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
-                          <th>Status</th>
+                          <th>No. Telp</th>
+                          <th>Alamat Rumah</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>53275531</td>
                           <td>Jacob</td>
-                          <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
                         </tr>
                         <tr>
                           <td>53275531</td>
                           <td>Messsy</td>
-                          <td>15 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td>081215643567</td>
+                          <td>Bandung, Indonesia</td>
                         </tr>
                         <tr>
                           <td>53275531</td>
                           <td>John</td>
-                          <td>14 May 2017</td>
-                          <td><label class="badge badge-info">Fixed</label></td>
+                          <td>+1 23456789410</td>
+                          <td>London, UK</td>
                         </tr>
                         <tr>
                           <td>53275531</td>
                           <td>Peter</td>
-                          <td>16 May 2017</td>
-                          <td><label class="badge badge-success">Completed</label></td>
+                          <td>+1 61556689742</td>
+                          <td>Ottawa, Canada</td>
                         </tr>
                         <tr>
                           <td>53275531</td>
                           <td>Dave</td>
-                          <td>20 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td>+1 555555555</td>
+                          <td>Sidney, Australia</td>
                         </tr>
                       </tbody>
                     </table>
@@ -217,17 +217,77 @@ $username = $_SESSION["username"];
                 </div>
               </div>
             </div>
-            <div class="col-lg-6 grid-margin stretch-card">
+            <div class="col-lg-4 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Kelola Keberangkatan</h4>
+                  <h4 class="card-title">Status Driver</h4>
                   <div class="table-responsive">
-                  <table class="table table-hover">
+                    <table class="table select-table">
+                      <thead>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class="d-flex ">
+                              <div>
+                                <h6>Brandon Washington</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td><div class="badge badge-opacity-warning">In progress</div></td>
+                        </tr>
+                        <tr>
+                          </td>
+                          <td>
+                            <div class="d-flex ">
+                              <div>
+                                <h6>Brandon Washington</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td><div class="badge badge-opacity-warning">In progress</div></td>
+                        </tr>
+                        <tr>
+                          </td>
+                          <td>
+                            <div class="d-flex ">
+                              <div>
+                                <h6>Brandon Washington</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td><div class="badge badge-opacity-success">In progress</div></td>
+                        </tr>
+                        <tr>
+                          </td>
+                          <td>
+                            <div class="d-flex ">
+                              <div>
+                                <h6>Brandon Washington</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Kelola Driver</h4>
+                  <div class="table-responsive">
+                    <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>ID Pesanan</th>
+                          <th>NIK</th>
                           <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
+                          <th>No. Telp</th>
+                          <th>Alamat</th>
+                          <th>Status</th>
                           <th>Kelola</th>
                         </tr>
                       </thead>
@@ -235,32 +295,42 @@ $username = $_SESSION["username"];
                         <tr>
                           <td>53275531</td>
                           <td>Jacob</td>
-                          <td>12 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                          <td><i class="mdi mdi-account-multiple-plus"></i>Kelola</td> 
                         </tr>
                         <tr>
                           <td>53275531</td>
-                          <td>Messsy</td>
-                          <td>15 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                          <td>Jacob</td>
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                          <td><i class="mdi mdi-account-multiple-plus"></i>Kelola</td> 
                         </tr>
                         <tr>
                           <td>53275531</td>
-                          <td>John</td>
-                          <td>14 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                          <td>Jacob</td>
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                          <td><i class="mdi mdi-account-multiple-plus"></i>Kelola</td> 
                         </tr>
                         <tr>
                           <td>53275531</td>
-                          <td>Peter</td>
-                          <td>16 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                          <td>Jacob</td>
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                          <td><i class="mdi mdi-account-multiple-plus"></i>Kelola</td> 
                         </tr>
                         <tr>
                           <td>53275531</td>
-                          <td>Dave</td>
-                          <td>20 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                          <td>Jacob</td>
+                          <td>082235623044</td>
+                          <td>Jl. Raya Kedungwaru No.98, Kedungwaru, Kec. Banyuwangi</td>
+                          <td><div class="badge badge-opacity-danger">In progress</div></td>
+                          <td><i class="mdi mdi-account-multiple-plus"></i>Kelola</td> 
                         </tr>
                       </tbody>
                     </table>

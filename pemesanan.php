@@ -119,7 +119,7 @@ $username = $_SESSION["username"];
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="dashboard.php">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -166,50 +166,74 @@ $username = $_SESSION["username"];
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
+            <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Status Keberangkatan</h4>
+                  <h4 class="card-title">Kelola Pemesanan</h4>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th>ID Pesanan</th>
-                          <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
+                          <th>Nama Lengkap</th>
+                          <th>NIK</th>
+                          <th>No. Telp</th>
+                          <th>Tanggal</th>
+                          <th>Kota Asal</th>
+                          <th>Kota Tujuan</th>
                           <th>Status</th>
+                          <th>Kelola</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>53275531</td>
                           <td>Jacob</td>
-                          <td>12 May 2017</td>
+                          <td>532755352343</td>
+                          <td>53275535</td>
+                          <td>19 Desember 2023</td>
+                          <td>Bandung</td>
+                          <td>Malang</td>
                           <td><label class="badge badge-danger">Pending</label></td>
+                        <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
                         </tr>
                         <tr>
-                          <td>53275531</td>
                           <td>Messsy</td>
-                          <td>15 May 2017</td>
+                          <td>532755352343</td>
+                          <td>53275535</td>
+                          <td>19 Desember 2023</td>
+                          <td>Jakarta</td>
+                          <td>Malang</td>
                           <td><label class="badge badge-warning">In progress</label></td>
+                        <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
                         </tr>
                         <tr>
-                          <td>53275531</td>
                           <td>John</td>
-                          <td>14 May 2017</td>
+                          <td>53275535</td>
+                          <td>532755352343</td>
+                          <td>19 Desember 2023</td>
+                          <td colspan="1">Others city</td>
+                          <td>Surabaya</td>
                           <td><label class="badge badge-info">Fixed</label></td>
+                        <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
                         </tr>
                         <tr>
-                          <td>53275531</td>
                           <td>Peter</td>
-                          <td>16 May 2017</td>
+                          <td>53275535</td>
+                          <td>532755352343</td>
+                          <td>19 Desember 2023</td>
+                          <td>Malang</td>
+                          <td>Surabaya</td>
                           <td><label class="badge badge-success">Completed</label></td>
+                        <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
                         </tr>
                         <tr>
-                          <td>53275531</td>
                           <td>Dave</td>
-                          <td>20 May 2017</td>
+                          <td>53275535</td>
+                          <td>532755352343</td>
+                          <td>19 Desember 2023</td>
+                          <td>Banyuwangi</td>
+                          <td>Bali</td>
                           <td><label class="badge badge-warning">In progress</label></td>
+                        <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
                         </tr>
                       </tbody>
                     </table>
@@ -217,50 +241,163 @@ $username = $_SESSION["username"];
                 </div>
               </div>
             </div>
-            <div class="col-lg-6 grid-margin stretch-card">
+            <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Kelola Keberangkatan</h4>
+                <div class="d-sm-flex justify-content-between align-items-start">
+                    <div>
+                        <h4 class="card-title">Detail Pemesanan</h4>
+                    </div>
+                    <div>
+                    <form class="search-form" action="#">
+                        <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+                    </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Nama Lengkap</th>
+                        <th>NIK</th>
+                        <th>No. Telp</th>
+                        <th>Tanggal Pemesanan</th>
+                        <th>Tanggal Keberangkatan</th>
+                        <th>Kota Asal</th>
+                        <th>Alamat</th>
+                        <th>Kota Tujuan</th>
+                        <th>Alamat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>Jacob</td>
+                          <td>532755352343</td>
+                        <td>53275531</td>
+                        <td>12 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Banyuwangi</td>
+                        <td>Jl. Raya Banyuwangi No.89, Kec. Banyuwangi, Kab.Banyuwangi</td>
+                        <td>Jakarta Timur</td>
+                        <td>Jl. Raya Mampuro Jati No.6, Kec. Mampurosari, Kota Jakarta Timur</td>
+                        </tr>
+                        <tr>
+                        <td>Messsy</td>
+                          <td>532755352343</td>
+                        <td>53275532</td>
+                        <td>15 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Kediri</td>
+                        <td>Jl. Raya Mampuro Jati No.6, Kec. Mampurosari, Kota Jakarta Timur</td>
+                        <td>Yogyakarta</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td>
+                        </tr>
+                        <tr>
+                        <td>John</td>
+                          <td>532755352343</td>
+                        <td>53275533</td>
+                        <td>14 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td>
+                        <td>Surabaya</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td></td>
+                        </tr>
+                        <tr>
+                        <td>Peter</td>
+                          <td>532755352343</td>
+                        <td>53275534</td>
+                        <td>16 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td>
+                        <td>Surabaya</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td></td>
+                        </tr>
+                        <tr>
+                        <td>Dave</td>
+                        <td>532755352343</td>
+                        <td>53275535</td>
+                        <td>20 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td>
+                        <td>Surabaya</td>
+                        <td>Jl. Raya Dadapan Kulon Progo No.12, Kec. Dadapann</td></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Riwayat Pemesanan</h4>
                   <div class="table-responsive">
-                  <table class="table table-hover">
+                    <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th>ID Pesanan</th>
-                          <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
-                          <th>Kelola</th>
+                            <th>Nama Lengkap</th>
+                            <th>NIK</th>
+                            <th>No. Telp</th>
+                            <th>Tanggal Pemesanan</th>
+                            <th>Tanggal Keberangkatan</th>
+                            <th>Kota Asal</th>
+                            <th>Kota Tujuan</th>
+                            <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>53275531</td>
-                          <td>Jacob</td>
-                          <td>12 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                        <td>Jacob</td>
+                        <td>532755352343</td>
+                        <td>53275531</td>
+                        <td>12 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Banyuwangi</td>
+                        <td>Jakarta Timur</td>
+                        <td><label class="badge badge-success">Completed</label></td>
                         </tr>
                         <tr>
-                          <td>53275531</td>
-                          <td>Messsy</td>
-                          <td>15 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                        <td>Messsy</td>
+                        <td>532755352343</td>
+                        <td>53275532</td>
+                        <td>15 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Kediri</td>
+                        <td>Yogyakarta</td>
+                        <td><label class="badge badge-success">Completed</label></td>
+                        </tr>
+                        <td>John</td>
+                        <td>532755352343</td>
+                        <td>53275533</td>
+                        <td>14 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Surabaya</td>
+                        <td><label class="badge badge-danger">Incompleted</label></td>
                         </tr>
                         <tr>
-                          <td>53275531</td>
-                          <td>John</td>
-                          <td>14 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                        <td>Peter</td>
+                        <td>532755352343</td>
+                        <td>53275534</td>
+                        <td>16 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Surabaya</td>
+                          <td><label class="badge badge-success">Completed</label></td>
                         </tr>
                         <tr>
-                          <td>53275531</td>
-                          <td>Peter</td>
-                          <td>16 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Dave</td>
-                          <td>20 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
+                        <td>Dave</td>
+                        <td>532755352343</td>
+                        <td>53275535</td>
+                        <td>20 May 2017</td>
+                        <td>12 May 2017</td>
+                        <td>Malang</td>
+                        <td>Surabaya</td>
+                          <td><label class="badge badge-success">Completed</label></td>
                         </tr>
                       </tbody>
                     </table>
