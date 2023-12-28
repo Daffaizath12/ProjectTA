@@ -148,8 +148,8 @@ $username = $_SESSION["username"];
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Detail Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Riwayat Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="detail-pemesanan.php">Detail Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="riwayat-pemesanan.php">Riwayat Pemesanan</a></li>
               </ul>
             </div>
           </li>
@@ -213,25 +213,41 @@ $username = $_SESSION["username"];
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Data Sopir</h4>
-                  <a href="tambah-sopir.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Sopir</button></a>
+                  <h4 class="card-title">Data Jurusan</h4>
+                  <a href="tambah-jurusan.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Jurusan</button></a>
                   <div class="table-responsive">
                     <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>Nama</th>
-                          <th>No. SIM</th>
-                          <th>No. Telp</th>
-                          <th>Alamat</th>
+                          <th>Kota Keberangkatan</th>
+                          <th>Kota Tujuan</th>
+                          <th>Waktu Keberangkatan</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Toni</td>
-                          <td>87654390123456789</td>
-                          <td>(+62)81234567890</td>
-                          <td>Jl. Raya No.1, Kec. Bintang, Kabupaten Bandung Barat, Jawa Barat</td>
+                          <td>Malang</td>
+                          <td>Surabaya</td>
+                          <td>30</td>
+                          <td>
+                            <button type="button" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-danger">Delete</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Banyuwangi</td>
+                          <td>Surabaya</td>
+                          <td>30</td>
+                          <td>
+                            <button type="button" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-danger">Delete</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Banyuwangi</td>
+                          <td>Malang</td>
+                          <td>30</td>
                           <td>
                             <button type="button" class="btn btn-primary">Edit</button>
                             <button type="button" class="btn btn-danger">Delete</button>

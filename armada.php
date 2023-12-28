@@ -214,24 +214,22 @@ $username = $_SESSION["username"];
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Data Sopir</h4>
-                  <a href="tambah-sopir.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Sopir</button></a>
+                  <a href="tambah-armada.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah armada</button></a>
                   <div class="table-responsive">
                     <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>Nama</th>
-                          <th>No. SIM</th>
-                          <th>No. Telp</th>
-                          <th>Alamat</th>
+                          <th>Nonol</th>
+                          <th>Jenis Armada</th>
+                          <th>Jumlah Kursi</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Toni</td>
-                          <td>87654390123456789</td>
-                          <td>(+62)81234567890</td>
-                          <td>Jl. Raya No.1, Kec. Bintang, Kabupaten Bandung Barat, Jawa Barat</td>
+                          <td>P 8765 XQ</td>
+                          <td>Motor</td>
+                          <td>30</td>
                           <td>
                             <button type="button" class="btn btn-primary">Edit</button>
                             <button type="button" class="btn btn-danger">Delete</button>

@@ -9,6 +9,11 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Redirect to driver.php when click cancel
+if(isset($_POST['cancel'])){
+    header('Location: driver.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -207,46 +212,40 @@ $username = $_SESSION["username"];
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Data Sopir</h4>
-                  <a href="tambah-sopir.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Sopir</button></a>
-                  <div class="table-responsive">
-                    <table class="table table-Hover">
-                      <thead>
-                        <tr>
-                          <th>Nama</th>
-                          <th>No. SIM</th>
-                          <th>No. Telp</th>
-                          <th>Alamat</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Toni</td>
-                          <td>87654390123456789</td>
-                          <td>(+62)81234567890</td>
-                          <td>Jl. Raya No.1, Kec. Bintang, Kabupaten Bandung Barat, Jawa Barat</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Sopir</h4>
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">Nama</label>
+                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nama Lengkap">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nomor SIM</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Nomor SIM">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Nomor Telepon</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nomor Telepon">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">Alamat</label>
+                                <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Alamat">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
+                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>

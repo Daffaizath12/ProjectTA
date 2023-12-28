@@ -28,7 +28,6 @@ $username = $_SESSION["username"];
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
@@ -119,46 +118,90 @@ $username = $_SESSION["username"];
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="dashboard.php">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">All Data</li>
+          <li class="nav-item nav-category">Pengguna</li>
           <li class="nav-item">
-            <a class="nav-link" href="pemesanan.php">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <i class="menu-icon mdi mdi-floor-plan"></i>
+              <span class="menu-title">Pengguna</span>
+              <i class="menu-arrow"></i> 
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="pelanggan.php">Pelanggan</a></li>
+                <li class="nav-item"> <a class="nav-link" href="sopir.php">Sopir</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">Forms and Datas</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Data Pemesanan</span>
+              <span class="menu-title">Pemesanan</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Detail Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Riwayat Pemesanan</a></li>
+              </ul>
+            </div>
           </li>
-          <li class="nav-item" >
-            <a class="nav-link" href="berangkat.php">
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
               <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Data Keberangkatan</span>
+              <span class="menu-title">Data Perjalanan</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="charts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="jurusan.php">Daftar Perjalanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="armada.php">Data Armada</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="driver.php">
+            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
               <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Driver</span>
+              <span class="menu-title">Rute Perjalanan</span>
               <i class="menu-arrow"></i>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pelanggan.php">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Data Pelanggan</span>
-              <i class="menu-arrow"></i>
-            </a>
+            <div class="collapse" id="tables">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">Daftar Node</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Rute Tercepat</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
               <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Logout</span>
+              <span class="menu-title">Galeri</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="icons">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">Tambah Artiket</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">Logout</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-account-circle-outline"></i>
+              <span class="menu-title">User Logout</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#"> Logout </a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>

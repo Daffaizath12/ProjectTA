@@ -9,6 +9,11 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Redirect to driver.php when click cancel
+if(isset($_POST['cancel'])){
+    header('Location: armada.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -119,159 +124,124 @@ $username = $_SESSION["username"];
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="dashboard.php">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">All Data</li>
+          <li class="nav-item nav-category">Pengguna</li>
           <li class="nav-item">
-            <a class="nav-link" href="pemesanan.php">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <i class="menu-icon mdi mdi-floor-plan"></i>
+              <span class="menu-title">Pengguna</span>
+              <i class="menu-arrow"></i> 
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="pelanggan.php">Pelanggan</a></li>
+                <li class="nav-item"> <a class="nav-link" href="driver.php">Sopir</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">Forms and Datas</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Data Pemesanan</span>
+              <span class="menu-title">Pemesanan</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Detail Pemesanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Riwayat Pemesanan</a></li>
+              </ul>
+            </div>
           </li>
-          <li class="nav-item" >
-            <a class="nav-link" href="berangkat.php">
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
               <i class="menu-icon mdi mdi-chart-line"></i>
-              <span class="menu-title">Data Keberangkatan</span>
+              <span class="menu-title">Data Perjalanan</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="charts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="jurusan.php">Daftar Perjalanan</a></li>
+                <li class="nav-item"><a class="nav-link" href="armada.php">Data Armada</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="driver.php">
+            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
               <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Driver</span>
+              <span class="menu-title">Rute Perjalanan</span>
               <i class="menu-arrow"></i>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pelanggan.php">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Data Pelanggan</span>
-              <i class="menu-arrow"></i>
-            </a>
+            <div class="collapse" id="tables">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">Daftar Node</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Rute Tercepat</a></li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
               <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Logout</span>
+              <span class="menu-title">Galeri</span>
               <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="icons">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">Tambah Artiket</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">Logout</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-account-circle-outline"></i>
+              <span class="menu-title">User Logout</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#"> Logout </a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Status Keberangkatan</h4>
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID Pesanan</th>
-                          <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Jacob</td>
-                          <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Messsy</td>
-                          <td>15 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>John</td>
-                          <td>14 May 2017</td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Peter</td>
-                          <td>16 May 2017</td>
-                          <td><label class="badge badge-success">Completed</label></td>
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Dave</td>
-                          <td>20 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Armada</h4>
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">Nomor Polisi Kendaraan</label>
+                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nomor Polisi">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Jenis Kendaraan</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Jenis Kendaraan">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Jumlah Kursi</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Jumlah Kursi">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
+                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Kelola Keberangkatan</h4>
-                  <div class="table-responsive">
-                  <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID Pesanan</th>
-                          <th>Nama</th>
-                          <th>Tanggal Keberangkatan</th>
-                          <th>Kelola</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Jacob</td>
-                          <td>12 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Messsy</td>
-                          <td>15 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>John</td>
-                          <td>14 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Peter</td>
-                          <td>16 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                        <tr>
-                          <td>53275531</td>
-                          <td>Dave</td>
-                          <td>20 May 2017</td>
-                          <td><i class="mdi mdi-account-plus"></i>Tambah</td> 
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>

@@ -9,6 +9,14 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Redirect to driver.php when click cancel
+if(isset($_POST['cancel'])){
+    header('Location: jurusan.php');
+}
+
+// Set the current time for the waktu input field
+$currentTime = date('H:i');
 ?>
 
 <!DOCTYPE html>
@@ -96,26 +104,6 @@ $username = $_SESSION["username"];
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
-      <div class="theme-setting-wrapper">
-        <div id="settings-trigger"><i class="ti-settings"></i></div>
-        <div id="theme-settings" class="settings-panel">
-          <i class="settings-close ti-close"></i>
-          <p class="settings-heading">SIDEBAR SKINS</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border me-3"></div>Light</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border me-3"></div>Dark</div>
-          <p class="settings-heading mt-2">HEADER SKINS</p>
-          <div class="color-tiles mx-0 px-4">
-            <div class="tiles success"></div>
-            <div class="tiles warning"></div>
-            <div class="tiles danger"></div>
-            <div class="tiles info"></div>
-            <div class="tiles dark"></div>
-            <div class="tiles default"></div>
-          </div>
-        </div>
-      </div>
-      <!-- partial -->
-      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -207,46 +195,91 @@ $username = $_SESSION["username"];
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="mdi mdi-grid-large menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">Master Data</li>
+          <li class="nav-item">
+            <a class="nav-link" href="armada.php">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Data Pelanggan</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="driver.php">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Data Driver</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="armada.php">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Data Armada</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jurusan.php">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Data Jurusan</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jadwal.php">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Data Jadwal</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+              <i class="menu-icon mdi mdi-layers-outline"></i>
+              <span class="menu-title">Logout</span>
+              <i class="menu-arrow"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Data Sopir</h4>
-                  <a href="tambah-sopir.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Sopir</button></a>
-                  <div class="table-responsive">
-                    <table class="table table-Hover">
-                      <thead>
-                        <tr>
-                          <th>Nama</th>
-                          <th>No. SIM</th>
-                          <th>No. Telp</th>
-                          <th>Alamat</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Toni</td>
-                          <td>87654390123456789</td>
-                          <td>(+62)81234567890</td>
-                          <td>Jl. Raya No.1, Kec. Bintang, Kabupaten Bandung Barat, Jawa Barat</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Jurusan</h4>
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">Kota Keberangkatan</label>
+                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Kota Kebrangkatan">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Kota Tujuan</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Kota Tujuan">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Waktu Keberangkatan</label>
+                                <input type="time" class="form-control" id="exampleInputPassword1" placeholder="Waktu Keberangkatan" value="<?php echo $currentTime; ?>">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
+                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
