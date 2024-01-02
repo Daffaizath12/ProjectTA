@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     // Query untuk memeriksa apakah pengguna ada di database
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM user WHERE username='$username' AND password='$password' AND id_role = 1";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: dashboard.php"); // Redirect ke halaman home setelah login sukses
     } else {
         // Login gagal, mungkin tampilkan pesan kesalahan
-        echo "Login gagal. Periksa kembali username dan password Anda.";
+        echo "Login gagal. Periksa kembali username dan password Anda atau pastikan Anda memiliki peran 'Admin'.";
     }
 }
 

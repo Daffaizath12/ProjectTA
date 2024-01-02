@@ -1,4 +1,6 @@
 <?php
+include "koneksi.php";
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -7,8 +9,15 @@ if (!isset($_SESSION["username"])) {
     exit;
 }
 
+// Menampilkan pesan jika ada
+if (isset($_SESSION['pesan'])) {
+    echo "<p>{$_SESSION['pesan']}</p>";
+    unset($_SESSION['pesan']); // Hapus pesan setelah ditampilkan
+}
+
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +40,8 @@ $username = $_SESSION["username"];
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xrZ12XNDSm6ZuAu0GzNPgA/0p9LpfbjqLXPde3d/+2I02wcDJG3QeBAA+QvwtuIQreIV9fsAgXtRs2e+1kA+dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
@@ -219,7 +230,7 @@ $username = $_SESSION["username"];
                     <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>Nama</th>
+                          <th>Nama Lengkap</th>
                           <th>No. SIM</th>
                           <th>No. Telp</th>
                           <th>Alamat</th>
@@ -227,18 +238,38 @@ $username = $_SESSION["username"];
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Toni</td>
-                          <td>87654390123456789</td>
-                          <td>(+62)81234567890</td>
-                          <td>Jl. Raya No.1, Kec. Bintang, Kabupaten Bandung Barat, Jawa Barat</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
+                        <?php
+                        // Ambil data sopir dari database dan tampilkan
+                        // Gantilah ini dengan kueri sesuai struktur tabel dan database Anda
+                        $sql = "SELECT * FROM sopir";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                              echo "<tr>";
+                              echo "<td>" . $row["nama_lengkap"] . "</td>";
+                              echo "<td>" . $row["no_SIM"] . "</td>";
+                              echo "<td>" . $row["notelp"] . "</td>";
+                              echo "<td>" . $row["alamat"] . "</td>";
+                              echo "<td>";
+                              echo "<a href='edit-sopir.php?id_sopir=" . $row["id_sopir"] . "' class='badge btn-primary'>Edit</a>";
+                              echo "<a href='javascript:void(0);' onclick='konfirmasiHapus(" . $row['id_sopir'] . ")' class='badge btn-danger'>Hapus</a>";
+                              echo "</td>";
+                              echo "</tr>";
+                            }
+                          } else {
+                            echo "<tr><td colspan='5'>Tidak ada data sopir.</td></tr>";
+                          }
+                        ?>
                       </tbody>
                     </table>
+                    <!-- Modal konfirmasi hapus -->
+                    <div id="modalHapus" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="tutupModalHapus()">&times;</span>
+                            <p>Apakah Anda yakin ingin menghapus sopir dengan ID <span id="idSopirHapus"></span>?</p>
+                            <button onclick="konfirmasiHapus()">Hapus</button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -291,6 +322,16 @@ function getInitials(name) {
   }
   return initials;
 }
+  </script>
+
+  <script>
+    function konfirmasiHapus(idSopir) {
+        var konfirmasi = confirm("Apakah Anda yakin ingin menghapus sopir dengan ID " + idSopir + "?");
+
+        if (konfirmasi) {
+            window.location.href = "hapus-sopir.php?id_sopir=" + idSopir;
+        }
+    }
   </script>
 
   <!-- inject:js -->

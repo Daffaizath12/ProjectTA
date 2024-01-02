@@ -133,7 +133,7 @@ $username = $_SESSION["username"];
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="pelanggan.php">Pelanggan</a></li>
-                <li class="nav-item"> <a class="nav-link" href="sopir.php">Sopir</a></li>
+                <li class="nav-item"> <a class="nav-link" href="driver.php">Sopir</a></li>
               </ul>
             </div>
           </li>

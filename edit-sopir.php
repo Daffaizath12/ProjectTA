@@ -1,4 +1,50 @@
 <?php
+include "koneksi.php";
+
+// Cek apakah ID sopir disediakan
+if (isset($_GET['id_sopir'])) {
+    $id_sopir = $_GET['id_sopir'];
+
+    // Query untuk mendapatkan data sopir berdasarkan ID
+    $query = "SELECT * FROM sopir WHERE id_sopir = '$id_sopir'";
+    $result = $conn->query($query);
+
+    // Periksa apakah data ditemukan
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $nama_lengkap = $row['nama_lengkap'];
+        $no_SIM = $row['no_SIM'];
+        $notelp = $row['notelp'];
+        $alamat = $row['alamat'];
+    } else {
+        // Redirect jika data tidak ditemukan
+        header("Location: driver.php");
+        exit;
+    }
+}
+
+// Proses pengeditan data sopir
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_sopir = $_POST["id_sopir"];
+    $nama_lengkap = $_POST["nama_lengkap"];
+    $no_SIM = $_POST["no_SIM"];
+    $notelp = $_POST["notelp"];
+    $alamat = $_POST["alamat"];
+
+    // Query UPDATE
+    $sql = "UPDATE sopir SET nama_lengkap='$nama_lengkap', no_SIM='$no_SIM', notelp='$notelp', alamat='$alamat' WHERE id_sopir='$id_sopir'";
+
+    // Eksekusi query
+    if ($conn->query($sql) === TRUE) {
+        $isSuccess = true;
+    }    
+}
+
+// Pastikan koneksi terbuka
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,6 +55,11 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Redirect to driver.php when click cancel
+if(isset($_POST['cancel'])){
+    header('Location: driver.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +76,7 @@ $username = $_SESSION["username"];
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="vendors/typicons/typicons.css">
   <link rel="stylesheet" href="vendors/simple-line-icons/css/simple-line-icons.css">
-  <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
@@ -207,56 +258,61 @@ $username = $_SESSION["username"];
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Data Pelanggan</h4>
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Nama Lengkap</th>
-                          <th>Username</th>
-                          <th>No. Telp</th>
-                          <th>Email</th>
-                          <th>Alamat</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>John Doe</td>
-                          <td>johnDoe</td>
-                          <td>085739087632</td>
-                          <td>johndoe@gmail.com</td>
-                          <td>Jl. Raya Kedungwaru No.12, Kec. Kedungwaru, Kab. Malang, Jawa Timur</td>
-                        </tr>
-                        <tr>
-                          <td>Merlin</td>
-                          <td>merlin123</td>
-                          <td>087765565543</td>
-                          <td>Merlin@gmail.com</td>
-                          <td>Jl. Raya No.79, Kec. Sukasari, Kota Bandung, Jawa</td>
-                        </tr>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>Jacob123</td>
-                          <td>082235623044</td>
-                          <td>jacob@gmail.com</td>
-                          <td>Jl. Raya No.79, Kec. Sukasari, Kota Bandung, Jawa</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tambah Sopir</h4>
+                        <form method="post" action="edit-sopir.php">
+                            <input type="hidden" name="id_sopir" value="<?php echo $id_sopir; ?>">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">Nama</label>
+                                <input type="text" class="form-control" id="exampleInputUsername1" name="nama_lengkap" value="<?php echo $nama_lengkap; ?>" placeholder="Nama Lengkap">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nomor SIM</label>
+                                <input type="text" class="form-control" id="exampleInputSIM" name="no_SIM" value="<?php echo $no_SIM; ?>" placeholder="Nomor SIM">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Nomor Telepon</label>
+                                <input type="text" class="form-control" id="exampleInputTelp" name="notelp" value="<?php echo $notelp; ?>" placeholder="Nomor Telepon">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">Alamat</label>
+                                <input type="text" class="form-control" id="exampleInputConfirmAlamat" name="alamat" value="<?php echo $alamat; ?>" placeholder="Alamat">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2" name="action" value="edit">Submit</button>
+                            <button type="button" class="btn btn-light" name="cancel" onclick="window.location.href='driver.php'">Cancel</button>
+                        </form>
+                        <!-- Modal Sukses -->
+                      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="successModalLabel">Sukses!</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Data berhasil di Edit!
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.href='edit-sopir.php'">Tutup</button>
+                              <a class="btn btn-primary" href="driver.php">Lihat Data</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
@@ -301,6 +357,17 @@ function getInitials(name) {
   }
   return initials;
 }
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Pastikan variabel isSuccess diatur oleh PHP setelah operasi penambahan data berhasil
+    var isSuccess = <?php echo json_encode($isSuccess); ?>;
+
+      if (isSuccess) {
+          $('#successModal').modal('show');
+      }
+    });
+
   </script>
 
   <!-- inject:js -->

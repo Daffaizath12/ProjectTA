@@ -1,4 +1,23 @@
 <?php
+
+include "koneksi.php";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]) && $_POST["action"] == "add") {
+  $nama_lengkap = $_POST["nama_lengkap"];
+  $no_SIM = $_POST["no_SIM"];
+  $notelp = $_POST["notelp"];
+  $alamat = $_POST["alamat"];
+
+  // Your SQL query
+  $sql = "INSERT INTO sopir (nama_lengkap, no_SIM, notelp, alamat) VALUES ('$nama_lengkap', '$no_SIM', '$notelp', '$alamat')";
+
+  // Execute the query
+  if ($conn->query($sql) === TRUE) {
+    $isSuccess = true;
+  }
+
+}
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,12 +28,9 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
-
-// Redirect to driver.php when click cancel
-if(isset($_POST['cancel'])){
-    header('Location: driver.php');
-}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +56,8 @@ if(isset($_POST['cancel'])){
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
     <!-- partial:partials/_navbar.html -->
@@ -219,26 +237,46 @@ if(isset($_POST['cancel'])){
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tambah Sopir</h4>
-                        <form method="post">
-                            <div class="form-group">
-                                <label for="exampleInputUsername1">Nama</label>
-                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nama Lengkap">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nomor SIM</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Nomor SIM">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Nomor Telepon</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Nomor Telepon">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputConfirmPassword1">Alamat</label>
-                                <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Alamat">
-                            </div>
-                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                        <form method="post" action="tambah-sopir.php" onsubmit="return validasiForm()" >
+                          <div class="form-group">
+                              <label for="exampleInputUsername1">Nama</label>
+                              <input type="text" class="form-control" id="exampleInputUsername1" name="nama_lengkap" placeholder="Nama Lengkap" Required>
+                          </div>
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Nomor SIM</label>
+                              <input type="text" class="form-control" id="exampleInputEmail1" name="no_SIM" placeholder="Nomor SIM"Required>
+                          </div>
+                          <div class="form-group">
+                              <label for="exampleInputPassword1">Nomor Telepon</label>
+                              <input type="text" class="form-control" id="exampleInputConfirmnotelp" name="notelp" placeholder="Nomor Telepon"Required>
+                          </div>
+                          <div class="form-group">
+                              <label for="exampleInputConfirmPassword1">Alamat</label>
+                              <input type="text" class="form-control" id="exampleInputConfirmAlamat" name="alamat" placeholder="Alamat"Required>
+                          </div>
+                          <button type="submit" class="btn btn-primary me-2" name="action" value="add">Submit</button>
+                          <button type="button" class="btn btn-light" name="cancel" onclick="window.location.href='driver.php'">Cancel</button>
                         </form>
+                        <!-- Modal Sukses -->
+                      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="successModalLabel">Sukses!</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Data berhasil ditambahkan!
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.href='tambah-sopir.php'">Tutup</button>
+                              <a class="btn btn-primary" href="driver.php">Lihat Data</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -292,6 +330,7 @@ function getInitials(name) {
 }
   </script>
 
+
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>
@@ -303,6 +342,20 @@ function getInitials(name) {
   <script src="js/jquery.cookie.js" type="text/javascript"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
+
+  <!-- Sisipkan skrip JavaScript Anda setelah jQuery dan Bootstrap -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Pastikan variabel isSuccess diatur oleh PHP setelah operasi penambahan data berhasil
+    var isSuccess = <?php echo json_encode($isSuccess); ?>;
+
+      if (isSuccess) {
+          $('#successModal').modal('show');
+      }
+    });
+
+  </script>
+
   <!-- End custom js for this page-->
 </body>
 
