@@ -1,19 +1,50 @@
 <?php
 include "koneksi.php";
 
-// Proses penghapusan data sopir
+// Cek apakah ID sopir disediakan
+if (isset($_GET['id_perjalanan'])) {
+    $id_perjalanan = $_GET['id_perjalanan'];
+
+    // Query untuk mendapatkan data sopir berdasarkan ID
+    $query = "SELECT * FROM daftar_perjalanan WHERE id_perjalanan = '$id_perjalanan'";
+    $result = $conn->query($query);
+
+    // Periksa apakah data ditemukan
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $kotaasal = $row['kota_asal'];
+        $kotatujuan = $row['kota_tujuan'];
+        $waktu_keberangkatan = $row['waktu_keberangkatan'];
+        $harga = $row["harga"];
+        $status = $row["status"];
+    } else {
+        // Redirect jika data tidak ditemukan
+        header("Location: jurusan.php");
+        exit;
+    }
+}
+
+// Proses pengeditan data sopir
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (isset($_POST["action"]) && $_POST["action"] == "delete" && isset($_POST["id_sopir"])) {
-      $id_sopir = $_POST["id_sopir"];
+    $id_perjalanan = $_POST["id_perjalanan"];
+    $kotaasal = $_POST['kota_asal'];
+    $kotatujuan = $_POST['kota_tujuan'];
+    $waktu_keberangkatan = $_POST['waktu_keberangkatan'];
+    $harga = $_POST["harga"];
+    $status = $_POST["status"];
 
-      // Query DELETE
-      $sql = "DELETE FROM sopir WHERE id_sopir='$id_sopir'";
+    // Query UPDATE
+    $sql = "UPDATE daftar_perjalanan SET kota_asal='$kotaasal', kota_tujuan='$kotatujuan', waktu_keberangkatan='$waktu_keberangkatan', harga='$harga', status='$status' WHERE id_perjalanan='$id_perjalanan'";
 
-      // Eksekusi query
-      if ($conn->query($sql) === TRUE) {
-          $isSuccess = true;
-      }
-  }
+    // Eksekusi query
+    if ($conn->query($sql) === TRUE) {
+        $isSuccess = true;
+    }    
+}
+
+// Pastikan koneksi terbuka
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 session_start();
@@ -24,15 +55,13 @@ if (!isset($_SESSION["username"])) {
     exit;
 }
 
-// Menampilkan pesan jika ada
-if (isset($_SESSION['pesan'])) {
-    echo "<p>{$_SESSION['pesan']}</p>";
-    unset($_SESSION['pesan']); // Hapus pesan setelah ditampilkan
-}
-
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
 
+// Redirect to driver.php when click cancel
+if(isset($_POST['cancel'])){
+    header('Location: driver.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +84,6 @@ $username = $_SESSION["username"];
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
-  <!-- icon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xrZ12XNDSm6ZuAu0GzNPgA/0p9LpfbjqLXPde3d/+2I02wcDJG3QeBAA+QvwtuIQreIV9fsAgXtRs2e+1kA+dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
@@ -233,90 +260,75 @@ $username = $_SESSION["username"];
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Data Sopir</h4>
-                  <a href="tambah-sopir.php"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#tambahSopirModal">Tambah Sopir</button></a>
-                  <div class="table-responsive">
-                    <table class="table table-Hover">
-                      <thead>
-                        <tr>
-                          <th>Nama Lengkap</th>
-                          <th>No. SIM</th>
-                          <th>No. Telp</th>
-                          <th>Alamat</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        // Ambil data sopir dari database dan tampilkan
-                        // Gantilah ini dengan kueri sesuai struktur tabel dan database Anda
-                        $sql = "SELECT * FROM sopir";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                              echo "<tr>";
-                              echo "<td>" . $row["nama_lengkap"] . "</td>";
-                              echo "<td>" . $row["no_SIM"] . "</td>";
-                              echo "<td>" . $row["notelp"] . "</td>";
-                              echo "<td>" . $row["alamat"] . "</td>";
-                              echo "<td>";
-                              echo "<button onclick=\"window.location.href='edit-sopir.php?id_sopir=" . $row["id_sopir"] . "'\" class='badge btn-primary'>Edit</button>";
-                              echo "<button class='badge btn-danger' data-bs-toggle='modal' data-bs-target='#hapusModal" . $row['id_sopir'] . "'>Hapus</button>";
-                              echo "</td>";
-                              echo "</tr>";
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit Daftar perjalanan</h4>
+                        <form method="post" action="edit-perjalanan.php">
+                            <input type="hidden" name="id_perjalanan" value="<?php echo $id_perjalanan; ?>">
 
-                              // Modal Konfirmasi Hapus
-                              echo "<div class='modal fade' id='hapusModal" . $row['id_sopir'] . "' tabindex='-1' role='dialog' aria-labelledby='hapusModalLabel' aria-hidden='true'>";
-                              echo "<div class='modal-dialog' role='document'>";
-                              echo "<div class='modal-content'>";
-                              echo "<div class='modal-header'>";
-                              echo "<h5 class='modal-title' id='hapusModalLabel'>Konfirmasi Hapus</h5>";
-                              echo "<button type='button' class='close' data-bs-dismiss='modal' aria-label='Close'>";
-                              echo "<span aria-hidden='true'>&times;</span>";
-                              echo "</button>";
-                              echo "</div>";
-                              echo "<div class='modal-body'>";
-                              echo "Apakah Anda yakin ingin menghapus sopir dengan ID " . $row['id_sopir'] . "?";
-                              echo "</div>";
-                              echo "<div class='modal-footer'>";
-                              echo "<form method='post' action='driver.php'>";
-                              echo "<input type='hidden' name='id_sopir' value='" . $row['id_sopir'] . "'>";
-                              echo "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Tutup</button>";
-                              echo "<button type='submit' class='btn btn-danger' name='action' value='delete'>Hapus</button>";
-                              echo "</form>";
-                              echo "</div>";
-                              echo "</div>";
-                              echo "</div>";
-                              echo "</div>";
-                            }
-                          } else {
-                            echo "<tr><td colspan='5'>Tidak ada data sopir.</td></tr>";
-                          }
-                        ?>
-                      </tbody>
-                    </table>
-                    <!-- Modal konfirmasi hapus -->
-                    <div id="modalHapus" class="modal">
-                        <div class="modal-content">
-                            <span class="close" onclick="tutupModalHapus()">&times;</span>
-                            <p>Apakah Anda yakin ingin menghapus sopir dengan ID <span id="idSopirHapus"></span>?</p>
-                            <button onclick="konfirmasiHapus()">Hapus</button>
+                            <div class="form-group">
+                                <label for="exampleInputKotaAsal">Kota Asal</label>
+                                <input type="text" class="form-control" id="exampleInputKotaAsal" name="kota_asal" value="<?php echo $kotaasal; ?>" placeholder="Kota Asal">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputKotaTujuan">Kota Tujuan</label>
+                                <input type="text" class="form-control" id="exampleInputKotaTujuan" name="kota_tujuan" value="<?php echo $kotatujuan; ?>" placeholder="Kota Tujuan">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputWaktuKeberangkatan">Waktu Keberangkatan</label>
+                                <input type="time" class="form-control" id="exampleInputWaktuKeberangkatan" name="waktu_keberangkatan" value="<?php echo $waktu_keberangkatan; ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputHarga">Harga</label>
+                                <input type="number" class="form-control" id="exampleInputHarga" name="harga" value="<?php echo $harga; ?>" placeholder="Harga">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputStatus">Status</label>
+                                <select class="form-control" id="exampleInputStatus" name="status">
+                                    <option value="tersedia" <?php echo ($status == 'tersedia') ? 'selected' : ''; ?>>Tersedia</option>
+                                    <option value="kosong" <?php echo ($status == 'kosong') ? 'selected' : ''; ?>>Kosong</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary me-2" name="action" value="edit">Submit</button>
+                            <button type="button" class="btn btn-light" name="cancel" onclick="window.location.href='jurusan.php'">Cancel</button>
+                        </form>
+
+                        <!-- Modal Sukses -->
+                      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="successModalLabel">Sukses!</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Data berhasil di Edit!
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.href='edit-perjalanan.php'">Tutup</button>
+                              <a class="btn btn-primary" href="jurusan.php">Lihat Data</a>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
@@ -362,7 +374,17 @@ function getInitials(name) {
   return initials;
 }
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Pastikan variabel isSuccess diatur oleh PHP setelah operasi penambahan data berhasil
+    var isSuccess = <?php echo json_encode($isSuccess); ?>;
 
+      if (isSuccess) {
+          $('#successModal').modal('show');
+      }
+    });
+
+  </script>
 
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>

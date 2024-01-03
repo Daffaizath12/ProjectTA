@@ -1,4 +1,6 @@
 <?php
+include "koneksi.php";
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,7 +11,9 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -219,40 +223,37 @@ $username = $_SESSION["username"];
                     <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>Kota Keberangkatan</th>
+                          <th>Kota Asal</th>
                           <th>Kota Tujuan</th>
                           <th>Waktu Keberangkatan</th>
-                          <th>Action</th>
+                          <th>Harga</th>
+                          <th>Status</th>
+                          <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Malang</td>
-                          <td>Surabaya</td>
-                          <td>30</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Banyuwangi</td>
-                          <td>Surabaya</td>
-                          <td>30</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Banyuwangi</td>
-                          <td>Malang</td>
-                          <td>30</td>
-                          <td>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                          </td>
-                        </tr>
+                        <?php
+                        // Ambil data sopir dari database dan tampilkan
+                        // Gantilah ini dengan kueri sesuai struktur tabel dan database Anda
+                        $sql = "SELECT * FROM daftar_perjalanan";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                              echo "<tr>";
+                              echo "<td>" . $row["kota_asal"] . "</td>";
+                              echo "<td>" . $row["kota_tujuan"] . "</td>";
+                              echo "<td>" . $row["waktu_keberangkatan"] . "</td>";
+                              echo "<td>" . $row["harga"] . "</td>";
+                              echo "<td>" . $row["status"] . "</td>";
+                              echo "<td>";
+                              echo "<button onclick=\"window.location.href='edit-perjalanan.php?id_perjalanan=" . $row["id_perjalanan"] . "'\" class='badge btn-primary'>Edit</button>";
+                              echo "</td>";
+                              echo "</tr>";
+                            }
+                          } else {
+                            echo "<tr><td colspan='5'>Tidak ada data sopir.</td></tr>";
+                          }
+                        ?>
                       </tbody>
                     </table>
                   </div>
@@ -308,6 +309,9 @@ function getInitials(name) {
   return initials;
 }
   </script>
+
+  <!-- Update your script section -->
+
 
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>

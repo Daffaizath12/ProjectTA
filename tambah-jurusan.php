@@ -1,4 +1,24 @@
 <?php
+
+include "koneksi.php";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]) && $_POST["action"] == "add") {
+  $kotaasal = $_POST['kota_asal'];
+  $kotatujuan = $_POST['kota_tujuan'];
+  $waktu_keberangkatan = $_POST['waktu_keberangkatan'];
+  $harga = $_POST["harga"];
+  $status = $_POST["status"];
+
+  // Your SQL query
+  $sql = "INSERT INTO daftar_perjalanan (kota_asal, kota_tujuan, waktu_keberangkatan, harga, status) VALUES ('$kotaasal', '$kotatujuan', '$waktu_keberangkatan', '$harga', '$status')";
+
+  // Execute the query
+  if ($conn->query($sql) === TRUE) {
+    $isSuccess = true;
+  }
+
+}
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,15 +29,9 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
-
-// Redirect to driver.php when click cancel
-if(isset($_POST['cancel'])){
-    header('Location: jurusan.php');
-}
-
-// Set the current time for the waktu input field
-$currentTime = date('H:i');
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +57,8 @@ $currentTime = date('H:i');
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
     <!-- partial:partials/_navbar.html -->
@@ -104,6 +120,26 @@ $currentTime = date('H:i');
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
+      <div class="theme-setting-wrapper">
+        <div id="settings-trigger"><i class="ti-settings"></i></div>
+        <div id="theme-settings" class="settings-panel">
+          <i class="settings-close ti-close"></i>
+          <p class="settings-heading">SIDEBAR SKINS</p>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border me-3"></div>Light</div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border me-3"></div>Dark</div>
+          <p class="settings-heading mt-2">HEADER SKINS</p>
+          <div class="color-tiles mx-0 px-4">
+            <div class="tiles success"></div>
+            <div class="tiles warning"></div>
+            <div class="tiles danger"></div>
+            <div class="tiles info"></div>
+            <div class="tiles dark"></div>
+            <div class="tiles default"></div>
+          </div>
+        </div>
+      </div>
+      <!-- partial -->
+      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -195,84 +231,65 @@ $currentTime = date('H:i');
         </ul>
       </nav>
       <!-- partial -->
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">
-              <i class="mdi mdi-grid-large menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item nav-category">Master Data</li>
-          <li class="nav-item">
-            <a class="nav-link" href="armada.php">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Pelanggan</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="driver.php">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Driver</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="armada.php">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Armada</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="jurusan.php">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Jurusan</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="jadwal.php">
-              <i class="menu-icon mdi mdi-table"></i>
-              <span class="menu-title">Data Jadwal</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="menu-icon mdi mdi-layers-outline"></i>
-              <span class="menu-title">Logout</span>
-              <i class="menu-arrow"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- partial -->
       <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Tambah Jurusan</h4>
-                        <form method="post">
-                            <div class="form-group">
-                                <label for="exampleInputUsername1">Kota Keberangkatan</label>
-                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Kota Kebrangkatan">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Kota Tujuan</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Kota Tujuan">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Waktu Keberangkatan</label>
-                                <input type="time" class="form-control" id="exampleInputPassword1" placeholder="Waktu Keberangkatan" value="<?php echo $currentTime; ?>">
-                            </div>
-                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                        <h4 class="card-title">Tambah Sopir</h4>
+                        <form method="post" action="tambah-jurusan.php" onsubmit="return validasiForm()" >
+                          <div class="form-group">
+                              <label for="exampleInputKotaAsal">Kota Asal</label>
+                              <input type="text" class="form-control" id="exampleInputKotaAsal" name="kota_asal" placeholder="Kota Asal" Required>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputKotaTujuan">Kota Tujuan</label>
+                              <input type="text" class="form-control" id="exampleInputKotaTujuan" name="kota_tujuan" placeholder="Kota Tujuan">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputWaktuKeberangkatan">Waktu Keberangkatan</label>
+                              <input type="time" class="form-control" id="exampleInputWaktuKeberangkatan" name="waktu_keberangkatan" required>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputHarga">Harga</label>
+                              <input type="number" class="form-control" id="exampleInputHarga" name="harga" placeholder="Harga">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputStatus">Status</label>
+                              <select class="form-control" id="exampleInputStatus" name="status">
+                                  <option>Tersedia</option>
+                                  <option>Kosong</option>
+                              </select>
+                          </div>
+
+                          <button type="submit" class="btn btn-primary me-2" name="action" value="add">Submit</button>
+                          <button type="button" class="btn btn-light" name="cancel" onclick="window.location.href='jurusan.php'">Cancel</button>
                         </form>
+                        <!-- Modal Sukses -->
+                      <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="successModalLabel">Sukses!</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Data berhasil ditambahkan!
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.href='tambah-jurusan.php'">Tutup</button>
+                              <a class="btn btn-primary" href="jurusan.php">Lihat Data</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -326,6 +343,7 @@ function getInitials(name) {
 }
   </script>
 
+
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>
@@ -337,6 +355,20 @@ function getInitials(name) {
   <script src="js/jquery.cookie.js" type="text/javascript"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
+
+  <!-- Sisipkan skrip JavaScript Anda setelah jQuery dan Bootstrap -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Pastikan variabel isSuccess diatur oleh PHP setelah operasi penambahan data berhasil
+    var isSuccess = <?php echo json_encode($isSuccess); ?>;
+
+      if (isSuccess) {
+          $('#successModal').modal('show');
+      }
+    });
+
+  </script>
+
   <!-- End custom js for this page-->
 </body>
 
