@@ -172,8 +172,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Detail Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Riwayat Pemesanan</a></li>
               </ul>
             </div>
           </li>
@@ -186,7 +184,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="jurusan.php">Daftar Perjalanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="armada.php">Data Armada</a></li>
               </ul>
             </div>
           </li>

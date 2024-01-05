@@ -1,4 +1,6 @@
 <?php
+include"koneksi.php";
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,7 +11,12 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Lakukan query ke database untuk mendapatkan data pelanggan
+$sql = "SELECT * FROM user WHERE id_role = 3";
+$result = $conn->query($sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -148,8 +155,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Detail Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="pemesanan.php">Riwayat Pemesanan</a></li>
               </ul>
             </div>
           </li>
@@ -162,7 +167,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="jurusan.php">Daftar Perjalanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="armada.php">Data Armada</a></li>
               </ul>
             </div>
           </li>
@@ -226,27 +230,24 @@ $username = $_SESSION["username"];
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>John Doe</td>
-                          <td>johnDoe</td>
-                          <td>085739087632</td>
-                          <td>johndoe@gmail.com</td>
-                          <td>Jl. Raya Kedungwaru No.12, Kec. Kedungwaru, Kab. Malang, Jawa Timur</td>
-                        </tr>
-                        <tr>
-                          <td>Merlin</td>
-                          <td>merlin123</td>
-                          <td>087765565543</td>
-                          <td>Merlin@gmail.com</td>
-                          <td>Jl. Raya No.79, Kec. Sukasari, Kota Bandung, Jawa</td>
-                        </tr>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>Jacob123</td>
-                          <td>082235623044</td>
-                          <td>jacob@gmail.com</td>
-                          <td>Jl. Raya No.79, Kec. Sukasari, Kota Bandung, Jawa</td>
-                        </tr>
+                        <?php
+                        // Periksa apakah ada data
+                        if ($result->num_rows > 0) {
+                            // Loop untuk menampilkan data
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["nama_lengkap"] . "</td>";
+                                echo "<td>" . $row["username"] . "</td>";
+                                echo "<td>" . $row["notelp"] . "</td>";
+                                echo "<td>" . $row["email"] . "</td>";
+                                echo "<td>" . $row["alamat"] . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            // Jika tidak ada data
+                            echo "<tr><td colspan='5'>Tidak ada data pelanggan.</td></tr>";
+                        }
+                        ?>
                       </tbody>
                     </table>
                   </div>

@@ -1,4 +1,6 @@
 <?php
+include"koneksi.php";
+
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,6 +11,15 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Lakukan query ke database untuk mendapatkan data pemesanan beserta informasi lainnya
+$sql = "SELECT pemesanan.*, user.nama_lengkap, daftar_perjalanan.kota_asal, daftar_perjalanan.kota_tujuan
+        FROM pemesanan
+        JOIN user ON pemesanan.id_user = user.id_user
+        JOIN daftar_perjalanan ON pemesanan.id_perjalanan = daftar_perjalanan.id_perjalanan";
+$result = $conn->query($sql);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -148,8 +159,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="pemesanan.php">Data Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="detail-pemesanan.php">Detail Pemesanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="riwayat-pemesanan.php">Riwayat Pemesanan</a></li>
               </ul>
             </div>
           </li>
@@ -162,7 +171,6 @@ $username = $_SESSION["username"];
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="jurusan.php">Daftar Perjalanan</a></li>
-                <li class="nav-item"><a class="nav-link" href="armada.php">Data Armada</a></li>
               </ul>
             </div>
           </li>
@@ -218,27 +226,50 @@ $username = $_SESSION["username"];
                     <table class="table table-Hover">
                       <thead>
                         <tr>
-                          <th>Kode Pemesanan</th>
-                          <th>Jenis Armada</th>
-                          <th>Nama User</th>
-                          <th>lat_jemput</th>
-                          <th>lng_jemput</th>
-                          <th>Tanggal</th>
+                          <th>Nama</th>
+                          <th>Kota Asal</th>
+                          <th>Kota Tujuan</th>
+                          <th>Alamat Jemput</th>
+                          <th>Alamat Tujuan</th>
+                          <th>Waktu Jemput</th>
+                          <th>Tanggal Pesan</th>
                           <th>Harga</th>
-                          <th>Transaksi</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>TA-7867</td>
-                          <td>Avanza</td>
-                          <td>Muhammad Iqbal</td>
-                          <td>-7.593092,111.024701</td>
-                          <td>107.625998, -7.115299</td>
-                          <td>2021-08-28</td>
-                          <td>Rp. 150.000,-</td>
-                          <td><p class="badge badge-opacity-success me-3">Berhasil</p></td>
-                        </tr>
+                          <?php
+                          // Periksa apakah ada data
+                          if ($result->num_rows > 0) {
+                              // Loop untuk menampilkan data
+                              while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["nama_lengkap"] . "</td>";
+                                echo "<td>" . $row["kota_asal"] . "</td>";
+                                echo "<td>" . $row["kota_tujuan"] . "</td>";
+                                echo "<td>" . $row["alamat_jemput"] . "</td>";
+                                echo "<td>" . $row["alamat_tujuan"] . "</td>";
+                                echo "<td>" . $row["waktu_jemput"] . "</td>";
+                                echo "<td>" . $row["tanggal_pesan"] . "</td>";
+                                echo "<td>" . $row["harga"] . "</td>";
+                                $status = $row["status"];
+                                  $class = '';
+
+                                  if ($status == 'Menunggu') {
+                                      $class = 'badge-opacity-warning';
+                                  } elseif ($status == 'Selesai') {
+                                      $class = 'badge-opacity-success';
+                                  } elseif ($status == 'Gagal') {
+                                      $class = 'badge-opacity-danger';
+                                  }
+                                echo "<td><div class='badge $class'>$status</div></td>";
+                                echo "</tr>";
+                              }
+                          } else {
+                              // Jika tidak ada data
+                              echo "<tr><td colspan='9'>Tidak ada data pemesanan.</td></tr>";
+                          }
+                          ?>
                       </tbody>
                     </table>
                   </div>
