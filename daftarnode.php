@@ -1,5 +1,19 @@
 <?php
+include "koneksi.php";
 session_start();
+
+// Proses filter tanggal
+$tanggal_filter = isset($_GET['tanggal_berangkat']) ? $_GET['tanggal_berangkat'] : '';
+if (!empty($tanggal_filter)) {
+    // Formulir tanggal dipilih, proses filter
+    $sql = "SELECT alamat_jemput, alamat_tujuan FROM pemesanan WHERE tanggal_berangkat = '$tanggal_filter'";
+} else {
+    // Tampilkan semua data jika tanggal tidak dipilih
+    $sql = "SELECT alamat_jemput, alamat_tujuan FROM pemesanan";
+}
+
+// Eksekusi kueri SQL
+$result = $conn->query($sql);
 
 // Periksa apakah pengguna telah login
 if (!isset($_SESSION["username"])) {
@@ -7,14 +21,17 @@ if (!isset($_SESSION["username"])) {
     exit;
 }
 
+// Menampilkan pesan jika ada
+if (isset($_SESSION['pesan'])) {
+    echo "<p>{$_SESSION['pesan']}</p>";
+    unset($_SESSION['pesan']); // Hapus pesan setelah ditampilkan
+}
+
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
 
-// Redirect to driver.php when click cancel
-if(isset($_POST['cancel'])){
-    header('Location: armada.php');
-}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +53,8 @@ if(isset($_POST['cancel'])){
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xrZ12XNDSm6ZuAu0GzNPgA/0p9LpfbjqLXPde3d/+2I02wcDJG3QeBAA+QvwtuIQreIV9fsAgXtRs2e+1kA+dQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
@@ -193,52 +212,75 @@ if(isset($_POST['cancel'])){
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Logout</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Logout</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="#"> Logout </a></li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">        
+      <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Tambah Armada</h4>
-                        <form method="post">
-                            <div class="form-group">
-                                <label for="exampleInputUsername1">Nomor Polisi Kendaraan</label>
-                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nomor Polisi">
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="card-title">Daftar Node</h4>
+                        <form method="get" action="daftarnode.php" class="d-flex align-items-center">
+                            <div class="me-2">
+                                <input type="date" name="tanggal_berangkat" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Jenis Kendaraan</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Jenis Kendaraan">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Jumlah Kursi</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Jumlah Kursi">
-                            </div>
-                            <button type="submit" class="btn btn-primary me-2" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-light" name="cancel">Cancel</button>
+                            <button type="submit" class="badge btn-success">Filter</button>
                         </form>
                     </div>
+                  <div class="table-responsive">
+                    <table class="table table-Hover">
+                      <thead>
+                        <tr>
+                            <th>Alamat Jemput</th>
+                            <th>Alamat Tujuan</th>
+                            <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row["alamat_jemput"] . "</td>";
+                                echo "<td>" . $row["alamat_tujuan"] . "</td>";
+                                echo "<td><a href='detailnode.php?alamat_jemput=" . urlencode($row["alamat_jemput"]) . "&alamat_tujuan=" . urlencode($row["alamat_tujuan"]) . "' class='badge btn-primary' style='text-decoration: none;'>Tambah List</a></td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3'>Tidak ditemukan data berdasarkan tanggal keberangkatan yang dipilih.</td></tr>";
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin logout?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <a href="logout.php" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- content-wrapper ends -->
-        <!-- partial:../../partials/_footer.html -->
+        <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
@@ -284,6 +326,21 @@ function getInitials(name) {
   return initials;
 }
   </script>
+  <script>
+      // Inisialisasi modal
+      var myModal = new bootstrap.Modal(document.getElementById('logoutModal'), {
+          keyboard: false
+      });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $('#tanggalBerangkat').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+    });
+  </script>
+
 
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>

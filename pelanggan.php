@@ -195,19 +195,6 @@ $result = $conn->query($sql);
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Logout</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="menu-icon mdi mdi-account-circle-outline"></i>
-              <span class="menu-title">User Logout</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="#"> Logout </a></li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -256,6 +243,24 @@ $result = $conn->query($sql);
             </div>
           </div>
         </div>
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin logout?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <a href="logout.php" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
@@ -302,6 +307,12 @@ function getInitials(name) {
   }
   return initials;
 }
+  </script>
+  <script>
+      // Inisialisasi modal
+      var myModal = new bootstrap.Modal(document.getElementById('logoutModal'), {
+          keyboard: false
+      });
   </script>
 
   <!-- inject:js -->
