@@ -1,4 +1,5 @@
 <?php
+include"koneksi.php";
 session_start();
 
 // Periksa apakah pengguna telah login
@@ -9,6 +10,16 @@ if (!isset($_SESSION["username"])) {
 
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
+
+// Mendapatkan tanggal hari ini dalam format Y-m-d
+$today = date("Y-m-d");
+
+// Query untuk mendapatkan data pesanan hari ini
+$query = "SELECT pemesanan.*, user.nama_lengkap, daftar_perjalanan.kota_asal, daftar_perjalanan.kota_tujuan
+          FROM pemesanan
+          JOIN user ON pemesanan.id_user = user.id_user
+          JOIN daftar_perjalanan ON pemesanan.id_perjalanan = daftar_perjalanan.id_perjalanan WHERE DATE(tanggal_pesan) = '$today'";
+$result = $conn->query($query);
 ?>
 
 <!DOCTYPE html>
@@ -201,288 +212,85 @@ $username = $_SESSION["username"];
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview"> 
                     <div class="row">
-                      <div class="col-lg-12 d-flex flex-column">
-                        <div class="row flex-grow">
-                          <div class="col-12 grid-margin stretch-card">
-                            <div class="card card-rounded">
+                      <div class="col-lg-8 d-flex flex-column">
+                        <div class="row">
+                          <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
                               <div class="card-body">
-                                <div class="d-sm-flex justify-content-between align-items-start">
-                                  <div>
-                                    <h4 class="card-title card-title-dash">Daftar Resevasi</h4>
-                                  </div>
-                                  <div>
-                                    <button class="btn btn-primary btn-lg text-white mb-0 me-0" type="button"><i class="mdi mdi-apps"></i>Selengkapnya</button>
-                                  </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="card-title">Pesanan Terbaru</h4>
+                                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-apps"></i>Selengkapnya</button>
                                 </div>
-                                <div class="table-responsive  mt-1">
-                                  <table class="table select-table">
-                                    <thead>
-                                      <tr>
-                                        <th>Customer</th>
-                                        <th>tanggal</th>
-                                        <th>Status</th>
-                                        <th>Detail</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <h6>22-01-2023</h6><!-- Ganti dengan format tanggal yang sesuai -->
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                        <td>
-                                          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal">
-                                            <i class="mdi mdi-account-card-details"></i>Detail
-                                          </button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <h6>22-01-2023</h6><!-- Ganti dengan format tanggal yang sesuai -->
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                        <td>
-                                          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal">
-                                            <i class="mdi mdi-account-card-details"></i>Detail
-                                          </button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <h6>22-01-2023</h6><!-- Ganti dengan format tanggal yang sesuai -->
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-success">In progress</div></td>
-                                        <td>
-                                          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal">
-                                            <i class="mdi mdi-account-card-details"></i>Detail
-                                          </button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div>
-                                            <h6>22-01-2023</h6><!-- Ganti dengan format tanggal yang sesuai -->
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-danger">In progress</div></td>
-                                        <td>
-                                          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal">
-                                            <i class="mdi mdi-account-card-details"></i>Detail
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                <div class="table-responsive">
+                                  <table class="table table-Hover">
+                                      <thead>
+                                        <tr>
+                                          <th>Nama</th>
+                                          <th>Kota Asal</th>
+                                          <th>Kota Tujuan</th>
+                                          <th>Tanggal Keberangkatan</th>
+                                          <th>Harga</th>
+                                          <th>Status</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                          <?php
+                                          // Periksa apakah ada data
+                                          if ($result->num_rows > 0) {
+                                              // Loop untuk menampilkan data
+                                              while ($row = $result->fetch_assoc()) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row["nama_lengkap"] . "</td>";
+                                                echo "<td>" . $row["kota_asal"] . "</td>";
+                                                echo "<td>" . $row["kota_tujuan"] . "</td>";
+                                                echo "<td>" . $row["tanggal_berangkat"] . "</td>";
+                                                echo "<td>" . $row["harga"] . "</td>";
+                                                $status = $row["status"];
+                                                  $class = '';
+
+                                                  if ($status == 'Menunggu') {
+                                                      $class = 'badge-opacity-warning';
+                                                  } elseif ($status == 'Selesai') {
+                                                      $class = 'badge-opacity-success';
+                                                  } elseif ($status == 'Gagal') {
+                                                      $class = 'badge-opacity-danger';
+                                                  }
+                                                echo "<td><div class='badge $class'>$status</div></td>";
+                                                echo "</tr>";
+                                              }
+                                          } else {
+                                              // Jika tidak ada data
+                                              echo "<tr><td colspan='9'>Belum Ada Pesanan Hari ini</td></tr>";
+                                          }
+                                          ?>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="row flex-grow">
-                          <div class="col-md-4 col-lg-4">
-                            <div class="card card-rounded">
-                              <div class="card-body card-rounded">
-                                <h4 class="card-title  card-title-dash">Riwayat Pemesanan</h4>
-                                <div class="table-responsive">
-                                  <table class="table table-hover">
-                                    <thead>
-                                      <tr>
-                                          <th>Nama Lengkap</th>
-                                          <th>Tanggal Pemesanan</th>
-                                          <th>Status</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                      <td>Jacob</td>
-                                      <td>12 May 2017</td>
-                                      <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Messsy</td>
-                                      <td>15 May 2017</td>
-                                      <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <td>John</td>
-                                      <td>14 May 2017</td>
-                                      <td><label class="badge badge-danger">Incompleted</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Peter</td>
-                                      <td>16 May 2017</td>
-                                        <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Dave</td>
-                                      <td>20 May 2017</td>
-                                        <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                
-                                <div class="list align-items-center pt-3">
-                                  <div class="wrapper w-100">
-                                    <p class="mb-0">
-                                      <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
-                                    </p>
-                                  </div>
-                                </div>
+                        <div class="col-lg-4">
+                          <!-- Tabel kecil -->
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <h4 class="card-title">Status Driver</h4>
                               </div>
-                            </div>
-                          </div>
-                          <div class="col-md-4 col-lg-4">
-                            <div class="card card-rounded">
-                              <div class="card-body card-rounded">
-                                <h4 class="card-title  card-title-dash">Riwayat Keberangkatan</h4>
-                                <div class="table-responsive">
-                                  <table class="table table-hover">
-                                    <thead>
-                                      <tr>
-                                          <th>Nama Lengkap</th>
-                                          <th>Tanggal Berangkat</th>
-                                          <th>Status</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                      <td>Jacob</td>
-                                      <td>12 May 2017</td>
-                                      <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Messsy</td>
-                                      <td>15 May 2017</td>
-                                      <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <td>John</td>
-                                      <td>14 May 2017</td>
-                                      <td><label class="badge badge-danger">Incompleted</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Peter</td>
-                                      <td>16 May 2017</td>
-                                        <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                      <tr>
-                                      <td>Dave</td>
-                                      <td>20 May 2017</td>
-                                        <td><label class="badge badge-success">Completed</label></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                
-                                <div class="list align-items-center pt-3">
-                                  <div class="wrapper w-100">
-                                    <p class="mb-0">
-                                      <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-4 col-lg-4">
-                            <div class="card card-rounded">
-							                <div class="card-body card-rounded">
-                                <h4 class="card-title  card-title-dash">Status Driver</h4>
-                                <div class="table-responsive  mt-1">
-                                  <table class="table select-table">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-warning">In progress</div></td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-success">In progress</div></td>
-                                      </tr>
-                                      <tr>
-                                        </td>
-                                        <td>
-                                          <div class="d-flex ">
-                                            <div>
-                                              <h6>Brandon Washington</h6>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td><div class="badge badge-opacity-danger">In progress</div></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                                <div class="list align-items-center pt-3">
-                                  <div class="wrapper w-100">
-                                    <p class="mb-0">
-                                      <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
-                                    </p>
-                                  </div>
-                                </div>
+                              <div class="table-responsive">
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <!-- Isi tabel kecil -->
+                                      <!-- ... -->
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
                           </div>
@@ -494,7 +302,6 @@ $username = $_SESSION["username"];
               </div>
             </div>
           </div>
-        </div>
         <!-- Modal Logout -->
         <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
             <div class="modal-dialog">

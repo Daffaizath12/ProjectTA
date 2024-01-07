@@ -1,7 +1,9 @@
 <?php
-include"koneksi.php";
-
+include "koneksi.php";
 session_start();
+
+// Inisialisasi variabel $result
+$result = $conn->query("SELECT * FROM user WHERE id_role = 3");
 
 // Periksa apakah pengguna telah login
 if (!isset($_SESSION["username"])) {
@@ -12,11 +14,29 @@ if (!isset($_SESSION["username"])) {
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
 
-// Lakukan query ke database untuk mendapatkan data pelanggan
-$sql = "SELECT * FROM user WHERE id_role = 3";
-$result = $conn->query($sql);
-?>
+// Inisialisasi array untuk menyimpan data yang akan ditampilkan
+$displayData = array();
 
+// Jika ada parameter pencarian
+if (isset($_GET['searchInput']) && !empty($_GET['searchInput'])) {
+    $searchInput = $conn->real_escape_string($_GET['searchInput']);
+
+    // Query dengan kondisi pencarian
+    $query = "SELECT * FROM user WHERE nama_lengkap LIKE '%$searchInput%'";
+    $searchResult = $conn->query($query);
+
+    if ($searchResult->num_rows > 0) {
+        while ($row = $searchResult->fetch_assoc()) {
+            $displayData[] = $row;
+        }
+    }
+} else {
+    // Jika tidak ada pencarian, tampilkan semua data
+    while ($row = $result->fetch_assoc()) {
+        $displayData[] = $row;
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -204,7 +224,15 @@ $result = $conn->query($sql);
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Data Pelanggan</h4>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Data Pesanan</h4>
+                    <form method="get" action="pelanggan.php" class="d-flex align-items-center">
+                        <div class="me-2">
+                          <input type="text" class="form-control" id="searchInput" placeholder="Cari Pelanggan">
+                        </div>
+                        <button type="submit" class="badge btn-success">Cari</button>
+                    </form>
+                  </div>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
@@ -221,15 +249,15 @@ $result = $conn->query($sql);
                         // Periksa apakah ada data
                         if ($result->num_rows > 0) {
                             // Loop untuk menampilkan data
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>" . $row["nama_lengkap"] . "</td>";
-                                echo "<td>" . $row["username"] . "</td>";
-                                echo "<td>" . $row["notelp"] . "</td>";
-                                echo "<td>" . $row["email"] . "</td>";
-                                echo "<td>" . $row["alamat"] . "</td>";
-                                echo "</tr>";
-                            }
+                            foreach ($displayData as $row) {
+                              echo "<tr>";
+                              echo "<td>" . $row["nama_lengkap"] . "</td>";
+                              echo "<td>" . $row["username"] . "</td>";
+                              echo "<td>" . $row["notelp"] . "</td>";
+                              echo "<td>" . $row["email"] . "</td>";
+                              echo "<td>" . $row["alamat"] . "</td>";
+                              echo "</tr>";
+                          }
                         } else {
                             // Jika tidak ada data
                             echo "<tr><td colspan='5'>Tidak ada data pelanggan.</td></tr>";
@@ -313,6 +341,17 @@ function getInitials(name) {
       var myModal = new bootstrap.Modal(document.getElementById('logoutModal'), {
           keyboard: false
       });
+  </script>
+  <script>
+    $(document).ready(function(){
+      // Fungsi untuk melakukan pencarian
+      $("#searchInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("table tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
   </script>
 
   <!-- inject:js -->

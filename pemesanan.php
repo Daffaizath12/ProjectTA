@@ -12,11 +12,22 @@ if (!isset($_SESSION["username"])) {
 // Mengambil username dari sesi
 $username = $_SESSION["username"];
 
-// Lakukan query ke database untuk mendapatkan data pemesanan beserta informasi lainnya
-$sql = "SELECT pemesanan.*, user.nama_lengkap, daftar_perjalanan.kota_asal, daftar_perjalanan.kota_tujuan
-        FROM pemesanan
-        JOIN user ON pemesanan.id_user = user.id_user
-        JOIN daftar_perjalanan ON pemesanan.id_perjalanan = daftar_perjalanan.id_perjalanan";
+// Proses filter tanggal
+$tanggal_filter = isset($_GET['tanggal_pesan']) ? $_GET['tanggal_pesan'] : '';
+if (!empty($tanggal_filter)) {
+    // Formulir tanggal dipilih, proses filter
+    $sql = "SELECT pemesanan.*, user.nama_lengkap, daftar_perjalanan.kota_asal, daftar_perjalanan.kota_tujuan
+            FROM pemesanan
+            JOIN user ON pemesanan.id_user = user.id_user
+            JOIN daftar_perjalanan ON pemesanan.id_perjalanan = daftar_perjalanan.id_perjalanan WHERE tanggal_pesan = '$tanggal_filter'";
+} else {
+    // Tampilkan semua data jika tanggal tidak dipilih
+    $sql = "SELECT pemesanan.*, user.nama_lengkap, daftar_perjalanan.kota_asal, daftar_perjalanan.kota_tujuan
+            FROM pemesanan
+            JOIN user ON pemesanan.id_user = user.id_user
+            JOIN daftar_perjalanan ON pemesanan.id_perjalanan = daftar_perjalanan.id_perjalanan";
+}
+// Eksekusi kueri SQL
 $result = $conn->query($sql);
 
 
@@ -208,7 +219,15 @@ $result = $conn->query($sql);
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Data Pemesanan</h4>
+                  <div class="d-flex justify-content-between align-items-center">
+                      <h4 class="card-title">Data Pesanan</h4>
+                      <form method="get" action="pemesanan.php" class="d-flex align-items-center">
+                          <div class="me-2">
+                              <input type="date" name="tanggal_pesan" class="form-control">
+                          </div>
+                          <button type="submit" class="badge btn-success">Filter</button>
+                      </form>
+                  </div>
                   <div class="table-responsive">
                     <table class="table table-Hover">
                       <thead>
@@ -220,8 +239,8 @@ $result = $conn->query($sql);
                           <th>Alamat Tujuan</th>
                           <th>Waktu Jemput</th>
                           <th>Tanggal Pesan</th>
-                          <th>Harga</th>
                           <th>Keberangkatan</th>
+                          <th>Harga</th>
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -239,8 +258,8 @@ $result = $conn->query($sql);
                                 echo "<td>" . $row["alamat_tujuan"] . "</td>";
                                 echo "<td>" . $row["waktu_jemput"] . "</td>";
                                 echo "<td>" . $row["tanggal_pesan"] . "</td>";
-                                echo "<td>" . $row["harga"] . "</td>";
                                 echo "<td>" . $row["tanggal_berangkat"] . "</td>";
+                                echo "<td>" . $row["harga"] . "</td>";
                                 $status = $row["status"];
                                   $class = '';
 
@@ -337,6 +356,14 @@ function getInitials(name) {
       var myModal = new bootstrap.Modal(document.getElementById('logoutModal'), {
           keyboard: false
       });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $('#tanggalBerangkat').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+    });
   </script>
 
   <!-- inject:js -->
